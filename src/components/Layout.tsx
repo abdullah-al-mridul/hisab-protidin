@@ -15,12 +15,13 @@ export const Layout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      {/* Main content with left margin for sidebar on desktop */}
+      <main className="min-h-screen lg:ml-64">
         {/* Mobile Header */}
-        <header className="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
+        <header className="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between sticky top-0 z-30">
           <button
             onClick={() => setIsSidebarOpen(true)}
             className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -43,7 +44,8 @@ export const Layout: React.FC = () => {
           </button>
         </header>
 
-        <div className="flex-1 overflow-auto p-4 lg:p-8">
+        {/* Scrollable content area */}
+        <div className="p-4 lg:p-8">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>

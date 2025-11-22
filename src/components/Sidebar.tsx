@@ -42,7 +42,7 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
       {/* Sidebar */}
       <aside
         className={clsx(
-          "fixed top-0 left-0 z-50 h-screen w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 lg:translate-x-0 lg:static",
+          "fixed top-0 left-0 z-50 h-screen w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

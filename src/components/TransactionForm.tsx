@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Button } from "./ui/Button";
@@ -14,15 +14,27 @@ interface TransactionFormData {
   date: string;
 }
 
+interface Category {
+  id: string;
+  name: string;
+  type: "income" | "expense";
+}
+
 export const TransactionForm: React.FC<{ onSuccess?: () => void }> = ({
   onSuccess,
 }) => {
   const { t } = useTranslation();
   const { user } = useAuthStore();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedType, setSelectedType] = useState<"income" | "expense">(
+    "expense"
+  );
+
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<TransactionFormData>({
     defaultValues: {
@@ -31,6 +43,30 @@ export const TransactionForm: React.FC<{ onSuccess?: () => void }> = ({
     },
   });
 
+  const transactionType = watch("type");
+
+  useEffect(() => {
+    setSelectedType(transactionType);
+  }, [transactionType]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("categories")
+          .select("id, name, type")
+          .order("name");
+
+        if (error) throw error;
+        setCategories(data || []);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const onSubmit = async (data: TransactionFormData) => {
     if (!user) return;
 
@@ -38,6 +74,7 @@ export const TransactionForm: React.FC<{ onSuccess?: () => void }> = ({
       const { error } = await supabase.from("transactions").insert({
         ...data,
         user_id: user.id,
+        amount: Number(data.amount),
       });
 
       if (error) throw error;
@@ -49,15 +86,12 @@ export const TransactionForm: React.FC<{ onSuccess?: () => void }> = ({
     }
   };
 
-  return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
-    >
-      <h3 className="text-lg font-bold text-gray-800 mb-4">
-        {t("add_transaction")}
-      </h3>
+  const filteredCategories = categories.filter(
+    (cat) => cat.type === selectedType
+  );
 
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <label className="cursor-pointer">
           <input
@@ -66,7 +100,7 @@ export const TransactionForm: React.FC<{ onSuccess?: () => void }> = ({
             className="peer sr-only"
             {...register("type")}
           />
-          <div className="rounded-xl border-2 border-gray-200 p-3 text-center peer-checked:border-green-500 peer-checked:bg-green-50 peer-checked:text-green-600 transition-all">
+          <div className="rounded-xl border-2 border-gray-200 dark:border-gray-600 p-3 text-center peer-checked:border-green-500 peer-checked:bg-green-50 dark:peer-checked:bg-green-900/30 peer-checked:text-green-600 dark:peer-checked:text-green-400 transition-all">
             {t("income")}
           </div>
         </label>
@@ -77,7 +111,7 @@ export const TransactionForm: React.FC<{ onSuccess?: () => void }> = ({
             className="peer sr-only"
             {...register("type")}
           />
-          <div className="rounded-xl border-2 border-gray-200 p-3 text-center peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-600 transition-all">
+          <div className="rounded-xl border-2 border-gray-200 dark:border-gray-600 p-3 text-center peer-checked:border-red-500 peer-checked:bg-red-50 dark:peer-checked:bg-red-900/30 peer-checked:text-red-600 dark:peer-checked:text-red-400 transition-all">
             {t("expense")}
           </div>
         </label>
@@ -92,20 +126,26 @@ export const TransactionForm: React.FC<{ onSuccess?: () => void }> = ({
         error={errors.amount?.message}
       />
 
-      {/* TODO: Replace with real categories from DB */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Category
         </label>
         <select
-          {...register("category_id")}
-          className="w-full rounded-xl border border-gray-300 px-4 py-2 text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all"
+          {...register("category_id", { required: "Category is required" })}
+          className="w-full rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 px-4 py-2 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all"
         >
           <option value="">Select Category</option>
-          <option value="food">Food</option>
-          <option value="transport">Transport</option>
-          <option value="salary">Salary</option>
+          {filteredCategories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
         </select>
+        {errors.category_id && (
+          <p className="text-sm text-red-600 mt-1">
+            {errors.category_id.message}
+          </p>
+        )}
       </div>
 
       <Input
