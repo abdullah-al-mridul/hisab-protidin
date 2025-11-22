@@ -71,8 +71,10 @@ export const CategoriesPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">ক্যাটাগরি</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            ক্যাটাগরি
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             আপনার লেনদেনের ক্যাটাগরি পরিচালনা করুন
           </p>
         </div>
@@ -86,7 +88,7 @@ export const CategoriesPage: React.FC = () => {
         {categories.map((category) => (
           <div
             key={category.id}
-            className="bg-white p-5 rounded-xl border border-gray-200 flex items-center justify-between hover:shadow-md transition-shadow"
+            className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center justify-between"
           >
             <div className="flex items-center gap-4">
               <div
@@ -97,14 +99,16 @@ export const CategoriesPage: React.FC = () => {
                 <div className="w-5 h-5 bg-white opacity-90 rounded-full" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">{category.name}</h3>
-                <p className="text-xs text-gray-500">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                  {category.name}
+                </h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   {category.type === "income" ? "আয়" : "ব্যয়"}
                 </p>
               </div>
             </div>
             {!category.is_default && (
-              <button className="text-red-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-colors">
+              <button className="text-red-400 hover:text-red-600 dark:hover:text-red-300 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                 <Trash2 className="w-4 h-4" />
               </button>
             )}
@@ -126,12 +130,12 @@ export const CategoriesPage: React.FC = () => {
           />
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Type
             </label>
             <select
               name="type"
-              className="w-full rounded-xl border border-gray-300 px-4 py-2"
+              className="w-full rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 px-4 py-2"
             >
               <option value="expense">Expense</option>
               <option value="income">Income</option>

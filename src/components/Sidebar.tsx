@@ -42,16 +42,18 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
       {/* Sidebar */}
       <aside
         className={clsx(
-          "fixed top-0 left-0 z-50 h-screen w-64 bg-white border-r border-gray-200 transition-transform duration-300 lg:translate-x-0 lg:static",
+          "fixed top-0 left-0 z-50 h-screen w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 lg:translate-x-0 lg:static",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         {/* Logo Section */}
-        <div className="p-6 flex items-center gap-3 border-b border-gray-100">
+        <div className="p-6 flex items-center gap-3 border-b border-gray-100 dark:border-gray-700">
           <div className="flex-shrink-0">
             <Logo className="w-10 h-10" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900">হিসাব প্রতিদিন</h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+            হিসাব প্রতিদিন
+          </h1>
         </div>
 
         {/* Navigation */}
@@ -66,7 +68,7 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
                   "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium text-sm",
                   isActive
                     ? "bg-blue-600 text-white"
-                    : "text-gray-700 hover:bg-gray-50"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 )
               }
             >
@@ -77,10 +79,10 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
         </nav>
 
         {/* Logout Button */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 dark:border-gray-700">
           <button
             onClick={() => signOut()}
-            className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-red-600 hover:bg-red-50 transition-colors font-medium text-sm"
+            className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors font-medium text-sm"
           >
             <LogOut className="w-5 h-5" />
             <span>{t("logout")}</span>

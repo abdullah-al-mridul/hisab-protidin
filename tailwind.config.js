@@ -5,20 +5,26 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Light mode colors
+        background: "#FAFAFA",
+        foreground: "#111827",
+        card: "#FFFFFF",
+        "card-foreground": "#111827",
+        border: "#E5E7EB",
+
+        // Dark mode will use CSS variables
         primary: {
-          DEFAULT: "#4A8CFF",
+          DEFAULT: "#3B82F6",
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#2ECC71",
+          DEFAULT: "#10B981",
           foreground: "#FFFFFF",
         },
         accent: {
-          DEFAULT: "#FFC857",
-          foreground: "#1F2937",
+          DEFAULT: "#8B5CF6",
+          foreground: "#FFFFFF",
         },
-        background: "#F6F9FC",
-        foreground: "#1F2937",
       },
       fontFamily: {
         sans: ["Inter", "Noto Sans Bengali", "sans-serif"],

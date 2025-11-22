@@ -17,21 +17,25 @@ export const BudgetPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">মাসিক বাজেট</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            মাসিক বাজেট
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             আপনার মাসিক বাজেট পরিচালনা করুন
           </p>
         </div>
         <Button onClick={() => setIsModalOpen(true)}>বাজেট সেট করুন</Button>
       </div>
 
-      <div className="bg-white p-8 rounded-xl border border-gray-200 text-center">
-        <p className="text-sm text-gray-500 mb-2">মোট বাজেট</p>
-        <h2 className="text-4xl font-bold text-gray-900 mb-8">
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+          মোট বাজেট
+        </p>
+        <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8">
           ৳ {budget.toLocaleString()}
         </h2>
 
-        <div className="relative h-3 bg-gray-100 rounded-full overflow-hidden mb-4">
+        <div className="relative h-3 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden mb-4">
           <div
             className={`absolute top-0 left-0 h-full transition-all duration-500 ${
               isOverBudget ? "bg-red-600" : "bg-blue-600"
@@ -41,21 +45,31 @@ export const BudgetPage: React.FC = () => {
         </div>
 
         <div className="flex justify-between text-sm font-medium">
-          <span className="text-gray-600">
+          <span className="text-gray-600 dark:text-gray-400">
             খরচ হয়েছে: ৳ {spent.toLocaleString()}
           </span>
-          <span className={isOverBudget ? "text-red-600" : "text-green-600"}>
+          <span
+            className={
+              isOverBudget
+                ? "text-red-600 dark:text-red-400"
+                : "text-green-600 dark:text-green-400"
+            }
+          >
             বাকি: ৳ {(budget - spent).toLocaleString()}
           </span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl border border-gray-200 h-64 flex items-center justify-center">
-          <p className="text-gray-400 text-sm">বাজেট বরাদ্দ চার্ট</p>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 h-64 flex items-center justify-center">
+          <p className="text-gray-400 dark:text-gray-500 text-sm">
+            বাজেট বরাদ্দ চার্ট
+          </p>
         </div>
-        <div className="bg-white p-6 rounded-xl border border-gray-200 h-64 flex items-center justify-center">
-          <p className="text-gray-400 text-sm">খরচের ট্রেন্ড</p>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 h-64 flex items-center justify-center">
+          <p className="text-gray-400 dark:text-gray-500 text-sm">
+            খরচের ট্রেন্ড
+          </p>
         </div>
       </div>
 

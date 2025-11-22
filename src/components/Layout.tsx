@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import { Menu, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -6,7 +6,7 @@ import { Sidebar } from "./Sidebar";
 import { Logo } from "./Logo";
 
 export const Layout: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const { i18n } = useTranslation();
 
   const toggleLanguage = () => {
@@ -15,27 +15,29 @@ export const Layout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Mobile Header */}
-        <header className="lg:hidden bg-white border-b border-gray-200 p-4 flex items-center justify-between shadow-sm">
+        <header className="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
           >
             <Menu className="w-6 h-6" />
           </button>
 
           <div className="flex items-center gap-2">
             <Logo className="w-8 h-8" />
-            <span className="font-bold text-gray-900">হিসাব প্রতিদিন</span>
+            <span className="font-bold text-gray-900 dark:text-gray-100">
+              হিসাব প্রতিদিন
+            </span>
           </div>
 
           <button
             onClick={toggleLanguage}
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
           >
             <Globe className="w-5 h-5" />
           </button>
