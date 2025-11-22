@@ -24,10 +24,10 @@ import { supabase } from "../lib/supabase";
 import { useAuthStore } from "../store/useAuthStore";
 
 const StatCard = ({ title, amount, icon: Icon, color, trend }: any) => (
-  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-    <div className="flex items-start justify-between mb-4">
-      <div className={`p-3 rounded-lg ${color}`}>
-        <Icon className="w-5 h-5 text-white" />
+  <div className="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700">
+    <div className="flex items-start justify-between mb-3">
+      <div className={`p-2 rounded ${color}`}>
+        <Icon className="w-4 h-4 text-white" />
       </div>
       {trend && (
         <div
@@ -46,9 +46,9 @@ const StatCard = ({ title, amount, icon: Icon, color, trend }: any) => (
         </div>
       )}
     </div>
-    <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{title}</p>
-    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-      ৳ {amount.toLocaleString()}
+    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{title}</p>
+    <p className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+      ৳{amount.toLocaleString()}
     </p>
   </div>
 );
@@ -81,7 +81,6 @@ export const Dashboard: React.FC = () => {
 
     const fetchDashboardData = async () => {
       try {
-        // Fetch transactions for current month
         const startOfMonth = new Date();
         startOfMonth.setDate(1);
         startOfMonth.setHours(0, 0, 0, 0);
@@ -95,7 +94,6 @@ export const Dashboard: React.FC = () => {
 
         if (error) throw error;
 
-        // Calculate stats
         const income =
           transactions
             ?.filter((t) => t.type === "income")
@@ -108,7 +106,6 @@ export const Dashboard: React.FC = () => {
 
         const balance = income - expense;
 
-        // Fetch budget
         const currentMonth = new Date().toISOString().slice(0, 7);
         const { data: budgetData } = await supabase
           .from("budgets")
@@ -127,10 +124,8 @@ export const Dashboard: React.FC = () => {
           budget: budgetRemaining,
         });
 
-        // Get recent 3 transactions
         setRecentTransactions(transactions?.slice(0, 3) || []);
 
-        // Prepare monthly trend data (last 7 days)
         const last7Days = [];
         for (let i = 6; i >= 0; i--) {
           const date = new Date();
@@ -152,7 +147,6 @@ export const Dashboard: React.FC = () => {
         }
         setMonthlyData(last7Days);
 
-        // Prepare category breakdown
         const categoryMap = new Map();
         transactions
           ?.filter((t) => t.type === "expense")
@@ -182,56 +176,38 @@ export const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="space-y-8 animate-pulse">
-        {/* Header Skeleton */}
+      <div className="space-y-6 animate-pulse">
         <div>
-          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mb-2"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-64"></div>
+          <div className="h-7 bg-gray-200 dark:bg-gray-700 rounded w-40 mb-1"></div>
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-56"></div>
         </div>
 
-        {/* Stat Cards Skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700"
+              className="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-                <div className="w-12 h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="flex items-start justify-between mb-3">
+                <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                <div className="w-10 h-3 bg-gray-200 dark:bg-gray-700 rounded"></div>
               </div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20 mb-2"></div>
-              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-16 mb-2"></div>
+              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
             </div>
           ))}
         </div>
 
-        {/* Charts Skeleton */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-48 mb-4"></div>
-              <div className="h-80 bg-gray-200 dark:bg-gray-700 rounded"></div>
-            </div>
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-48 mb-4"></div>
-              <div className="space-y-3">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-center gap-3 p-3">
-                    <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
-                    <div className="flex-1">
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32 mb-2"></div>
-                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
-                    </div>
-                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
-                  </div>
-                ))}
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2 space-y-4">
+            <div className="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700">
+              <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-40 mb-3"></div>
+              <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded"></div>
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-48 mb-4"></div>
-            <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          <div className="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700">
+            <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-40 mb-3"></div>
+            <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded"></div>
           </div>
         </div>
       </div>
@@ -239,19 +215,19 @@ export const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">
+        <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-0.5">
           {t("dashboard")}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
           {new Date().toLocaleDateString("bn-BD", { dateStyle: "full" })}
         </p>
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title={t("balance")}
           amount={stats.balance}
@@ -279,15 +255,15 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          {/* Area Chart with Gradient */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-              সাম্প্রতিক খরচের ট্রেন্ড (শেষ ৭ দিন)
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 space-y-4">
+          {/* Area Chart */}
+          <div className="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700">
+            <h2 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+              সাম্প্রতিক খরচের ট্রেন্ড
             </h2>
             {monthlyData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={240}>
                 <AreaChart data={monthlyData}>
                   <defs>
                     <linearGradient
@@ -297,27 +273,33 @@ export const Dashboard: React.FC = () => {
                       x2="0"
                       y2="1"
                     >
-                      <stop offset="5%" stopColor="#EF4444" stopOpacity={0.3} />
+                      <stop offset="5%" stopColor="#EF4444" stopOpacity={0.2} />
                       <stop offset="95%" stopColor="#EF4444" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid
                     strokeDasharray="3 3"
-                    stroke="#374151"
-                    opacity={0.3}
+                    stroke="#E5E7EB"
+                    opacity={0.5}
                   />
                   <XAxis
                     dataKey="date"
                     stroke="#9CA3AF"
-                    style={{ fontSize: "12px" }}
+                    style={{ fontSize: "11px" }}
+                    tickLine={false}
                   />
-                  <YAxis stroke="#9CA3AF" style={{ fontSize: "12px" }} />
+                  <YAxis
+                    stroke="#9CA3AF"
+                    style={{ fontSize: "11px" }}
+                    tickLine={false}
+                  />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "#1F2937",
-                      border: "1px solid #374151",
-                      borderRadius: "8px",
-                      color: "#F9FAFB",
+                      backgroundColor: "#FFFFFF",
+                      border: "1px solid #E5E7EB",
+                      borderRadius: "4px",
+                      fontSize: "12px",
+                      padding: "8px",
                     }}
                     formatter={(value: any) => `৳${value.toLocaleString()}`}
                   />
@@ -325,41 +307,40 @@ export const Dashboard: React.FC = () => {
                     type="monotone"
                     dataKey="expense"
                     stroke="#EF4444"
-                    strokeWidth={3}
+                    strokeWidth={2}
                     fill="url(#colorExpense)"
-                    dot={{ fill: "#EF4444", strokeWidth: 2, r: 4 }}
-                    activeDot={{ r: 6 }}
+                    dot={false}
                   />
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-64 flex items-center justify-center">
-                <p className="text-gray-400 dark:text-gray-500 text-sm">
-                  No data available
+              <div className="h-48 flex items-center justify-center">
+                <p className="text-gray-400 dark:text-gray-500 text-xs">
+                  No data
                 </p>
               </div>
             )}
           </div>
 
           {/* Recent Transactions */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          <div className="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700">
+            <h2 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
               সাম্প্রতিক লেনদেন
             </h2>
             {recentTransactions.length === 0 ? (
-              <p className="text-center py-8 text-gray-400 dark:text-gray-500 text-sm">
-                No transactions yet
+              <p className="text-center py-6 text-gray-400 dark:text-gray-500 text-xs">
+                No transactions
               </p>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {recentTransactions.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
                           item.type === "income"
                             ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
                             : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
@@ -368,7 +349,7 @@ export const Dashboard: React.FC = () => {
                         {item.category?.name?.[0] || "৳"}
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-gray-100 text-sm">
+                        <p className="font-medium text-gray-900 dark:text-gray-100 text-xs">
                           {item.category?.name || "Uncategorized"}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -377,13 +358,13 @@ export const Dashboard: React.FC = () => {
                       </div>
                     </div>
                     <span
-                      className={`font-semibold text-sm ${
+                      className={`font-medium text-xs ${
                         item.type === "income"
                           ? "text-green-600 dark:text-green-400"
                           : "text-red-600 dark:text-red-400"
                       }`}
                     >
-                      {item.type === "income" ? "+" : "-"}৳{" "}
+                      {item.type === "income" ? "+" : "-"}৳
                       {Number(item.amount).toLocaleString()}
                     </span>
                   </div>
@@ -394,66 +375,64 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Pie Chart */}
-        <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-              ক্যাটাগরি অনুযায়ী খরচ
-            </h2>
-            {categoryData.length > 0 ? (
-              <>
-                <ResponsiveContainer width="100%" height={200}>
-                  <PieChart>
-                    <Pie
-                      data={categoryData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {categoryData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="mt-4 space-y-2">
-                  {categoryData.map((cat, index) => (
-                    <div
-                      key={cat.name}
-                      className="flex items-center justify-between text-sm"
-                    >
-                      <div className="flex items-center gap-2">
-                        <div
-                          className="w-3 h-3 rounded-full"
-                          style={{
-                            backgroundColor: COLORS[index % COLORS.length],
-                          }}
-                        />
-                        <span className="text-gray-700 dark:text-gray-300">
-                          {cat.name}
-                        </span>
-                      </div>
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
-                        ৳{cat.value.toLocaleString()}
+        <div className="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700">
+          <h2 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+            ক্যাটাগরি অনুযায়ী
+          </h2>
+          {categoryData.length > 0 ? (
+            <>
+              <ResponsiveContainer width="100%" height={160}>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    outerRadius={60}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {categoryData.map((_entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="mt-3 space-y-1.5">
+                {categoryData.map((cat, index) => (
+                  <div
+                    key={cat.name}
+                    className="flex items-center justify-between text-xs"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <div
+                        className="w-2.5 h-2.5 rounded-full"
+                        style={{
+                          backgroundColor: COLORS[index % COLORS.length],
+                        }}
+                      />
+                      <span className="text-gray-700 dark:text-gray-300">
+                        {cat.name}
                       </span>
                     </div>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <div className="h-64 flex items-center justify-center">
-                <p className="text-gray-400 dark:text-gray-500 text-sm">
-                  No expense data
-                </p>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                      ৳{cat.value.toLocaleString()}
+                    </span>
+                  </div>
+                ))}
               </div>
-            )}
-          </div>
+            </>
+          ) : (
+            <div className="h-48 flex items-center justify-center">
+              <p className="text-gray-400 dark:text-gray-500 text-xs">
+                No data
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
