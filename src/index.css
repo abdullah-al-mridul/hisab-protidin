@@ -6,23 +6,36 @@
 
 @layer base {
   :root {
-    --background: 250 250 250; /* #FAFAFA */
+    --background: 249 250 251; /* #F9FAFB */
     --foreground: 17 24 39; /* #111827 */
-    --card: 255 255 255; /* #FFFFFF */
+    --card: 255 255 255;
     --card-foreground: 17 24 39;
-    --border: 229 231 235; /* #E5E7EB */
+    --border: 229 231 235;
     --input: 229 231 235;
+    --primary: 59 130 246; /* #3B82F6 */
+    --primary-foreground: 255 255 255;
+    --success: 16 185 129; /* #10B981 */
+    --success-foreground: 255 255 255;
+    --danger: 239 68 68; /* #EF4444 */
+    --danger-foreground: 255 255 255;
     --muted: 249 250 251;
     --muted-foreground: 107 114 128;
+    --radius: 0.75rem; /* 12px */
   }
 
   .dark {
-    --background: 17 24 39; /* #111827 */
-    --foreground: 249 250 251; /* #F9FAFB */
-    --card: 31 41 55; /* #1F2937 */
+    --background: 17 24 39;
+    --foreground: 249 250 251;
+    --card: 31 41 55;
     --card-foreground: 249 250 251;
-    --border: 55 65 81; /* #374151 */
+    --border: 55 65 81;
     --input: 55 65 81;
+    --primary: 59 130 246;
+    --primary-foreground: 255 255 255;
+    --success: 16 185 129;
+    --success-foreground: 255 255 255;
+    --danger: 239 68 68;
+    --danger-foreground: 255 255 255;
     --muted: 31 41 55;
     --muted-foreground: 156 163 175;
   }

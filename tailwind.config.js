@@ -5,25 +5,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Light mode colors
-        background: "#FAFAFA",
-        foreground: "#111827",
+        background: "#F9FAFB", // Light Gray Background
+        foreground: "#111827", // Dark Gray Text
         card: "#FFFFFF",
         "card-foreground": "#111827",
         border: "#E5E7EB",
 
-        // Dark mode will use CSS variables
         primary: {
-          DEFAULT: "#3B82F6",
+          DEFAULT: "#3B82F6", // Brand Blue
+          foreground: "#FFFFFF",
+        },
+        success: {
+          DEFAULT: "#10B981", // Brand Green
+          foreground: "#FFFFFF",
+        },
+        danger: {
+          DEFAULT: "#EF4444", // Brand Red
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#10B981",
-          foreground: "#FFFFFF",
+          DEFAULT: "#F3F4F6",
+          foreground: "#1F2937",
         },
-        accent: {
-          DEFAULT: "#8B5CF6",
-          foreground: "#FFFFFF",
+        muted: {
+          DEFAULT: "#F9FAFB",
+          foreground: "#6B7280",
         },
       },
       fontFamily: {
